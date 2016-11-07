@@ -62,3 +62,53 @@ the plugin will write whatever the `license` property contains in the module's `
 
 ## License
 [ISC](https://opensource.org/licenses/ISC)
+
+## Example Usage
+
+```
+const LicenseWebpackPlugin = require('bower-license-webpack-plugin');
+
+/* ==========================================================================
+   Plugins definition
+   ========================================================================== */
+function definePlugins(options) {
+  // More info about the webpack plugins here:
+  // https://github.com/webpack/docs/wiki/optimization
+
+  const plugins = [
+    new LicenseWebpackPlugin({
+      moduleDir: 'bower_components',
+      pattern: /^(MIT|ISC|BSD.*)$/,
+      licenseFilenames: [
+        'LICENSE',
+        'LICENSE.md',
+        'LICENSE.txt',
+        'LICENSE-MIT',
+        'license',
+        'license.md',
+        'license.txt',
+      ],
+      filename: '3rdPartyLicenses.txt',
+      addLicenseText: false,
+    }),
+  ];
+
+  return plugins;
+}
+
+function webpackConfig(options) {
+  // karma watches the test entry points
+  // (you don't need to specify the entry option)
+  // webpack watches dependencies
+  const plugins = (!options.testing) ? definePlugins(options) : [];
+
+  plugins.push(new webpack.DefinePlugin(options.defines));
+
+  const config = {
+    plugins,
+  };
+  return config;
+}
+module.exports = webpackConfig;
+
+```
