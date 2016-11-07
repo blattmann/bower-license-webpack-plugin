@@ -1,5 +1,5 @@
 {
-  "name": "license-webpack-plugin",
+  "name": "bower-license-webpack-plugin",
   "version": "0.3.0",
   "description": "Outputs licenses from 3rd party libraries to a file",
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/xz64/license-webpack-plugin.git"
+    "url": "git+ssh://git@github.com/blattmann/bower-license-webpack-plugin.git"
   },
   "keywords": [
     "license",
@@ -21,9 +21,9 @@
   "author": "S K (xz64)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/xz64/license-webpack-plugin/issues"
+    "url": "https://github.com/blattmann/bower-license-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/xz64/license-webpack-plugin#readme",
+  "homepage": "https://github.com/blattmann/bower-license-webpack-plugin#readme",
   "devDependencies": {
     "mock-fs": "^3.9.0",
     "rimraf": "^2.5.3",

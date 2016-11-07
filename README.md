@@ -7,14 +7,14 @@ licenses match a given regex, and outputs the licenses for each package in your
 webpack build directory.
 
 ## Installation
-`npm install license-webpack-plugin --save-dev`
+`npm install bower-license-webpack-plugin --save-dev`
 
 ## Usage
 
 First, import the plugin into your webpack configuration:
 
 ```javascript
-var LicenseWebpackPlugin = require('license-webpack-plugin');
+var LicenseWebpackPlugin = require('bower-license-webpack-plugin');
 ```
 The plugin requires you to specify a regular expression for licenses to match
 under the pattern property.
