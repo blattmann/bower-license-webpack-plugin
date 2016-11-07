@@ -3,7 +3,7 @@ var fs = require('fs');
 var IsThere = require('is-there');
 var objectAssign = require('object-assign');
 
-var MODULE_DIR = 'node_modules';
+var MODULE_DIR = 'bower_components';
 
 var moduleReader = {
   isFromNodeModules: function(mod) {
@@ -12,7 +12,7 @@ var moduleReader = {
     return !!jsFilePath && jsFilePath.startsWith(modulePrefix);
   },
   readPackageJson: function(mod) {
-    var pathName = path.join(this.context, MODULE_DIR, mod, 'package.json');
+    var pathName = path.join(this.context, MODULE_DIR, mod, 'bower.json');
     var file = fs.readFileSync(pathName);
     return JSON.parse(file);
   },
