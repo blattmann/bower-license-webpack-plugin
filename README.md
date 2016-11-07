@@ -32,9 +32,10 @@ new LicenseWebpackPlugin({
 
 Below are all options that can be passed to the plugin:
 
+* `moduleDir` The directory that you would like to scan for licenses. The default is `bower_components`
 * `pattern` A regular expression of license names to match. The license is read
-  from the `license` property in `package.json` for each module used in your
-  webpack output.
+  from the `license` property in `package.json` or `bower.json` for each module used in your
+  `moduleDir` webpack output.
 * `filename` This is the output filename which gets written your webpack build
   directory. The default is `3rdpartylicenses.txt`.
 * `includeUndefined` whether include packages without license or not. The default is `false`

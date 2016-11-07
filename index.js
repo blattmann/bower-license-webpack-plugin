@@ -3,17 +3,40 @@ var fs = require('fs');
 var IsThere = require('is-there');
 var objectAssign = require('object-assign');
 
-var MODULE_DIR = 'bower_components';
-
 var moduleReader = {
   isFromNodeModules: function(mod) {
     var jsFilePath = mod.resource;
-    var modulePrefix = path.join(this.context, MODULE_DIR);
+    var modulePrefix = path.join(this.context, this.moduleDir);
     return !!jsFilePath && jsFilePath.startsWith(modulePrefix);
   },
   readPackageJson: function(mod) {
-    var pathName = path.join(this.context, MODULE_DIR, mod, 'bower.json');
-    var file = fs.readFileSync(pathName);
+    var packagePath = path.join(this.context, this.moduleDir, mod, 'package.json');
+    var bowerPath = path.join(this.context, this.moduleDir, mod, 'bower.json');
+    var file = '';
+
+    function fileExists(path) {
+      try  {
+        return fs.statSync(path).isFile();
+      }
+      catch (e) {
+
+        if (e.code == 'ENOENT') { // no such file or directory. File really does not exist
+          console.log('File does not exist: ', path);
+          return false;
+        }
+
+        console.log('Exception fs.statSync (' + path + '): ' + e);
+        throw e; // something else went wrong, we don't have rights, ...
+      }
+    }
+
+    if(fileExists(packagePath)) {
+      console.log('package: ', packagePath);
+      file = fs.readFileSync(packagePath);
+    } else {
+      console.log('bower: ', bowerPath);
+      file = fs.readFileSync(bowerPath);
+    }
     return JSON.parse(file);
   },
   getModuleInfo: function(mod) {
@@ -32,7 +55,7 @@ var moduleReader = {
   },
   findPackageName: function(jsFilePath) {
     return jsFilePath
-      .replace(path.join(this.context, MODULE_DIR) + path.sep, '')
+      .replace(path.join(this.context, this.moduleDir) + path.sep, '')
       .split(path.sep)
       .filter(function(value, index, arr) {
         return value.charAt(0) === '@'
@@ -75,7 +98,7 @@ var licenseReader = {
     var file =
       (this.licenseOverrides[mod] && IsThere(this.licenseOverrides[mod])) ?
       this.licenseOverrides[mod] : this.findLicenseFile(mod);
-    
+
     if(file) {
       licenseText = fs.readFileSync(file).toString('utf8');
     }
@@ -95,7 +118,7 @@ var licenseReader = {
   findLicenseFile: function(mod) {
     var file;
     for(var i = 0; i < this.licenseFilenames.length; i++) {
-      var licenseFile = path.join(this.context, MODULE_DIR, mod,
+      var licenseFile = path.join(this.context, this.moduleDir, mod,
         this.licenseFilenames[i]);
       if(IsThere(licenseFile)) {
         file = licenseFile;
@@ -176,6 +199,7 @@ var composedPlugin = objectAssign(
 
 var instance = function() {
   return {
+    moduleDir: 'bower_components',
     modules: [],
     errors: [],
     filename: '3rdpartylicenses.txt',
@@ -194,7 +218,7 @@ var instance = function() {
       'license',
       'license.md',
       'license.txt'
-    ]
+    ],
   };
 };
 
